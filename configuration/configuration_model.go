@@ -2,7 +2,7 @@ package configuration
 
 type Config struct {
 	Vadek      Vadek       `mapstructure:"vadek"`
-	SQlite3    *SQlite3    `mapstructure:"sqlite3"`
+	SQLite3    *SQLite3    `mapstructure:"sqlite3"`
 	Mysql      *Mysql      `mapstructure:"mysql"`
 	PostgreSQL *PostgreSQL `mapstructure:"postgresql"`
 	Log        *Log        `mapstructure:"log"`
@@ -20,8 +20,8 @@ type Vadek struct {
 }
 
 // 数据库相关
-type SQlite3 struct {
-	Enable bool `mapstructure:"host"`
+type SQLite3 struct {
+	Enable bool `mapstructure:"enable"`
 	File   string
 }
 type Mysql struct {

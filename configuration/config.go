@@ -15,6 +15,7 @@ func NewConfiguration() *Config {
 	var configFile string
 	flag.StringVar(&configFile, "config", "", "")
 	flag.Parse()
+
 	viper.AutomaticEnv()
 	replacer := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(replacer)
@@ -25,30 +26,30 @@ func NewConfiguration() *Config {
 		viper.AddConfigPath("./")
 		viper.SetConfigName("config")
 	}
-	config := &Config{}
+	conf := &Config{}
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
-	if err := viper.Unmarshal(config); err != nil {
+	if err := viper.Unmarshal(conf); err != nil {
 		panic(err)
 	}
-	if config.Vadek.WorkDir == "" {
+	if conf.Vadek.WorkDir == "" {
 		pwd, err := os.Getwd()
 		if err != nil {
 			panic(errors.Wrap(err, "init config: get current dir"))
 
 		}
-		config.Vadek.WorkDir, _ = filepath.Abs(pwd)
+		conf.Vadek.WorkDir, _ = filepath.Abs(pwd)
 	} else {
-		workDir, err := filepath.Abs(config.Vadek.WorkDir)
+		workDir, err := filepath.Abs(conf.Vadek.WorkDir)
 		if err != nil {
 			panic(err)
 		}
-		config.Vadek.WorkDir = workDir
+		conf.Vadek.WorkDir = workDir
 	}
 	normalizeDir := func(path *string, subDir string) {
 		if *path == "" {
-			*path = filepath.Join(config.Vadek.WorkDir, subDir)
+			*path = filepath.Join(conf.Vadek.WorkDir, subDir)
 		} else {
 			temp, err := filepath.Abs(*path)
 			if err != nil {
@@ -58,28 +59,28 @@ func NewConfiguration() *Config {
 		}
 	}
 	//TODO:后期记得修改目录问题
-	normalizeDir(&config.Vadek.LogDir, "log")
-	normalizeDir(&config.Vadek.TemplateDir, "resources/template")
-	normalizeDir(&config.Vadek.AdminResourcesDir, "resources/admin")
-	normalizeDir(&config.Vadek.UploadDir, "/upload")
-	normalizeDir(&config.Vadek.ThemeDir, "resources/template/theme")
-	if config.SQlite3 != nil && config.SQlite3.Enable {
-		normalizeDir(&config.SQlite3.File, "Vadek.db")
+	normalizeDir(&conf.Vadek.LogDir, "logs")
+	normalizeDir(&conf.Vadek.TemplateDir, "resources/template")
+	normalizeDir(&conf.Vadek.AdminResourcesDir, "resources/admin")
+	normalizeDir(&conf.Vadek.UploadDir, "/upload")
+	normalizeDir(&conf.Vadek.ThemeDir, "resources/template/theme")
+	if conf.SQLite3 != nil && conf.SQLite3.Enable {
+		normalizeDir(&conf.SQLite3.File, "Vadek.db")
 	}
-	if !FileIsExisted(config.Vadek.TemplateDir) {
-		panic("template dir: " + config.Vadek.TemplateDir + " not exist")
+	if !FileIsExisted(conf.Vadek.TemplateDir) {
+		panic("template dir: " + conf.Vadek.TemplateDir + " not exist")
 	}
-	if !FileIsExisted(config.Vadek.AdminResourcesDir) {
-		panic("AdminResourcesDir dir: " + config.Vadek.AdminResourcesDir + " not exist")
+	if !FileIsExisted(conf.Vadek.AdminResourcesDir) {
+		panic("AdminResourcesDir dir: " + conf.Vadek.AdminResourcesDir + " not exist")
 	}
-	if !FileIsExisted(config.Vadek.ThemeDir) {
-		panic("Theme dir: " + config.Vadek.ThemeDir + " not exist")
+	if !FileIsExisted(conf.Vadek.ThemeDir) {
+		panic("Theme dir: " + conf.Vadek.ThemeDir + " not exist")
 	}
-	initDirectory(config)
-	mode = config.Vadek.Mode
-	return config
+	initDirectory(conf)
+	mode = conf.Vadek.Mode
+	return conf
 }
-func initDirectory(config *Config) {
+func initDirectory(conf *Config) {
 	mkdirFunc := func(dir string, err error) error {
 		if err == nil {
 			if _, err = os.Stat(dir); os.IsNotExist(err) {
@@ -88,8 +89,8 @@ func initDirectory(config *Config) {
 		}
 		return err
 	}
-	err := mkdirFunc(config.Vadek.LogDir, nil)
-	err = mkdirFunc(config.Vadek.UploadDir, err)
+	err := mkdirFunc(conf.Vadek.LogDir, nil)
+	err = mkdirFunc(conf.Vadek.UploadDir, err)
 	if err != nil {
 		panic(fmt.Errorf("initDirectory err=%v", err))
 	}

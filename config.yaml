@@ -5,9 +5,9 @@ server:
 vadek:
   mode: "development"
   work_dir: "./" 
-  log_dir: "./logs" 
+  log_dir:
 
-logging:
+log:
   filename: log.log
   level:
     app: info 
@@ -19,11 +19,12 @@ logging:
 sqlite3:
   enable: true
 
-mysql:
-  host: 127.0.0.1
-  port: 3306
-  db: 
-  username: 
-  password: 
+
+#mysql:
+#  host: 127.0.0.1
+#  port: 3306
+#  db:
+#  username:
+#  password:
 
 

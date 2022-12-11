@@ -1,0 +1,8 @@
+2022-12-10T22:56:10.431+0800	INFO	database/init.go:22	Try to open SQLite3 db	{"path": "/home/hanjinyan/source/src/Vadek/Vadek.db"}
+2022-12-10T22:56:10.432+0800	INFO	database/init.go:43	connect database success
+2022-12-10T22:56:10.432+0800	ERROR	Vadek/main.go:32	no such table: attachment [0.013ms] [rows:-] SELECT * FROM `attachment` LIMIT 1
+2022-12-10T22:56:10.432+0800	ERROR	Vadek/main.go:32	generate struct from table fail: no such table: attachment
+2022-12-10T22:56:34.628+0800	INFO	database/init.go:22	Try to open SQLite3 db	{"path": "/home/hanjinyan/source/src/Vadek/Vadek.db"}
+2022-12-10T22:56:34.629+0800	INFO	database/init.go:43	connect database success
+2022-12-10T22:56:34.629+0800	ERROR	Vadek/main.go:32	no such table: attachment [0.018ms] [rows:-] SELECT * FROM `attachment` LIMIT 1
+2022-12-10T22:56:34.629+0800	ERROR	Vadek/main.go:32	generate struct from table fail: no such table: attachment
